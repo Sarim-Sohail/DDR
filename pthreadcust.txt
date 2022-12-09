@@ -1,0 +1,5 @@
+In our problem lock is acquired on line 126 in our customer thread. Our lock is released 
+on line 101 in worker thread. Queue was shared between both threads. We initialized binary semaphore where its
+ value is set to 0 and if the lock is acquired the customer is added into queue and if queue is full our customer thread
+  goes to sleep for random interval and tries again later.
+
