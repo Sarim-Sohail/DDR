@@ -1,14 +1,15 @@
-#include <pthread.h> // pthread
-#include <stdio.h>   // prinftf
-#include <stdlib.h>  // random
-#include <unistd.h>  // sleep
-// you might need more header files
+#include <pthread.h> // Pthread
+#include <stdio.h>   // Prinftf
+#include <stdlib.h>  // Random
+#include <unistd.h>  // Sleep
+// You probably might need more header files
 #include<semaphore.h>
-
+// Macro Definitions
 #define NUM_CUSTOMERS 5
 #define NUM_WORKERS 2
 #define SIZE 100000
 #define toolong 3
+// Global Variables + Static Function Declarations
 sem_t lock,lock1,lock2;
 static int q[SIZE];
 int cnt=0;
@@ -16,6 +17,7 @@ static int Rear = - 1;
 static int Front = - 1;
 static void *worker_actions(void *employee_id);
 static void *customer_actions(void *personal_id);
+
 static void enqueue(int i)
 {  // sem_wait(&lock1);
     if (Rear == SIZE - 1)
@@ -33,7 +35,7 @@ static void enqueue(int i)
     }
     //sem_post(&lock1);
 } 
- 
+
 static int dequeue()
 {   //sem_wait(&lock2);
     if (Front == - 1 || Front > Rear)
@@ -49,7 +51,7 @@ static int dequeue()
     }
     //sem_post(&lock2);
 } 
- 
+
 
 int main(int argc, char **argv) {
 
@@ -88,30 +90,27 @@ static void *worker_actions(void *employee_id) {
         sem_getvalue(&lock,&val);
     	if(cnt>0){
     		int temp=q[Front];
-    		
-    		
-			
+		
 			int time=rand()%10;
             printf("Person %d wakes worker %d\n",temp,id);
 			printf("Worker %d is making icecream for person %d .Taking %d seconds\n",id,temp,time);
 			dequeue();
 			sleep(time);
-		
 			
 			sem_post(&lock);
 			printf("Person %d recieved icecream\n",temp);
 		}
-		else{
-		    printf("No customers Worker %d sleeps\n",id);
+		else
+		{
+		    	printf("No customers Worker %d sleeps\n",id);
 			int time=rand()%10;
-			sleep(time);
-			
+			sleep(time);		
 		}
     }
 }
 
 static void *customer_actions(void *personal_id) {
-    // get the id of this customer
+    // Get the ID of this customer
     int id = *(int *)personal_id;
     int val;
     while(1){
